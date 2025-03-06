@@ -179,12 +179,12 @@ local function CreateESP(player)
         highlight.Adornee = char
     end)
 end
--- Hitbox Büyütme
 local function SetHitboxSize(size)
     for _, player in pairs(Players:GetPlayers()) do
         if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
-            player.Character.Head.Size = Vector3.new(size, size, size)
-            player.Character.Head.Transparency = 0.3
+            local head = player.Character.Head
+            head.Size = Vector3.new(size, size, size)
+            head.Transparency = 0.3  -- Hafif saydamlık (dikkat çekmemesi için)
         end
     end
 end
