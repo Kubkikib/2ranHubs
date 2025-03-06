@@ -156,30 +156,35 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
     end
 end)
 
--- ESP Fonksiyonu
 local function CreateESP(player)
     if player == LocalPlayer then return end
+    if not player.Team then return end  -- Takımsız oyuncular için koruma
 
     local highlight = Instance.new("Highlight")
     highlight.Parent = player.Character
     highlight.Adornee = player.Character
 
-    highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Kırmızı (Düşman)
+    -- Takıma Göre Renk
+    if player.Team == LocalPlayer.Team then
+        highlight.FillColor = Color3.fromRGB(0, 255, 0) -- Yeşil (Takım arkadaşı)
+    else
+        highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Kırmızı (Düşman)
+    end
+
     highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
     highlight.FillTransparency = 0.5
-    highlight.OutlineTransparency = 0
+    highlight.OutlineTransparency = 0.1
 
     player.CharacterAdded:Connect(function(char)
         highlight.Adornee = char
     end)
 end
-
 -- Hitbox Büyütme
 local function SetHitboxSize(size)
     for _, player in pairs(Players:GetPlayers()) do
         if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
             player.Character.Head.Size = Vector3.new(size, size, size)
-            player.Character.Head.Transparency = 0.5
+            player.Character.Head.Transparency = 0.3
         end
     end
 end
