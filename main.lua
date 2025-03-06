@@ -209,7 +209,7 @@ ToggleHitbox.MouseButton1Click:Connect(function()
     Hitbox_Enabled = not Hitbox_Enabled
     if Hitbox_Enabled then
         ToggleHitbox.Text = "Hitbox Büyütlü"
-        SetHitboxSize(1.5)  -- 5 kat büyütülmüş
+        SetHitboxSize(2)  -- 5 kat büyütülmüş
     else
         ToggleHitbox.Text = "Hitbox Küçük"
         SetHitboxSize(1)  -- Normal boyuta dön
@@ -222,4 +222,3 @@ Players.PlayerAdded:Connect(function(player)
         CreateESP(player)
     end
 end)
-
