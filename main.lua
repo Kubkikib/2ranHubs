@@ -179,6 +179,7 @@ local function CreateESP(player)
         highlight.Adornee = char
     end)
 end
+
 local function SetHitboxSize(size)
     for _, player in pairs(Players:GetPlayers()) do
         if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
@@ -192,43 +193,33 @@ end
 -- UI Butonları
 ToggleESP.MouseButton1Click:Connect(function()
     ESP_Enabled = not ESP_Enabled
-    for _, player in pairs(Players:GetPlayers()) do
-        if player.Character and player.Character:FindFirstChild("Head") then
-            if ESP_Enabled then
+    if ESP_Enabled then
+        ToggleESP.Text = "ESP Açık"
+        for _, player in pairs(Players:GetPlayers()) do
+            if player.Character then
                 CreateESP(player)
-            else
-                for _, highlight in pairs(player.Character:GetChildren()) do
-                    if highlight:IsA("Highlight") then
-                        highlight:Destroy()
-                    end
-                end
             end
         end
+    else
+        ToggleESP.Text = "ESP Kapalı"
     end
 end)
 
 ToggleHitbox.MouseButton1Click:Connect(function()
     Hitbox_Enabled = not Hitbox_Enabled
     if Hitbox_Enabled then
-        SetHitboxSize(5) -- Kafayı büyüt
-        ToggleHitbox.Text = "Hitbox: Büyük"
+        ToggleHitbox.Text = "Hitbox Büyütlü"
+        SetHitboxSize(1.5)  -- 5 kat büyütülmüş
     else
-        SetHitboxSize(1) -- Normal boyut
-        ToggleHitbox.Text = "Hitbox: Normal"
+        ToggleHitbox.Text = "Hitbox Küçük"
+        SetHitboxSize(1)  -- Normal boyuta dön
     end
 end)
 
--- ESP'yi Oyunculara Uygula
-local function ApplyESP()
-    for _, player in pairs(Players:GetPlayers()) do
-        if player.Character then
-            CreateESP(player)
-        end
-        player.CharacterAdded:Connect(function()
-            CreateESP(player)
-        end)
+-- ESP aktifken yeni oyuncular eklenirse, ESP'yi yeniden oluştur.
+Players.PlayerAdded:Connect(function(player)
+    if ESP_Enabled then
+        CreateESP(player)
     end
-end
+end)
 
-ApplyESP()
-Players.PlayerAdded:Connect(ApplyESP)
