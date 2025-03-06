@@ -185,28 +185,16 @@ local function SetHitboxSize(size)
         if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
             local head = player.Character.Head
             head.Size = Vector3.new(size, size, size)
-            head.Transparency = 0.3  -- Hafif saydamlık
+            head.Transparency = 0.3  -- Hafif saydamlık (dikkat çekmemesi için)
         end
     end
 end
-
--- Yeni karakter oluşturulduğunda hitbox'ı tekrar büyüt
-Players.PlayerAdded:Connect(function(player)
-    player.CharacterAdded:Connect(function(character)
-        if Hitbox_Enabled then
-            -- Hitbox boyutunu sürekli ayarlamak
-            SetHitboxSize(2)  -- 2 kat büyütülmüş
-        end
-    end)
-end)
 
 -- UI Butonları
 ToggleESP.MouseButton1Click:Connect(function()
     ESP_Enabled = not ESP_Enabled
     if ESP_Enabled then
-        ToggleESP.Text = "ESP Aç
         ToggleESP.Text = "ESP Açık"
-        -- ESP'yi tüm oyuncular için başlat
         for _, player in pairs(Players:GetPlayers()) do
             if player.Character then
                 CreateESP(player)
@@ -214,7 +202,6 @@ ToggleESP.MouseButton1Click:Connect(function()
         end
     else
         ToggleESP.Text = "ESP Kapalı"
-        -- ESP'yi tüm oyunculardan kaldır
         for _, player in pairs(Players:GetPlayers()) do
             if player.Character then
                 local highlight = player.Character:FindFirstChildOfClass("Highlight")
@@ -230,16 +217,13 @@ ToggleHitbox.MouseButton1Click:Connect(function()
     Hitbox_Enabled = not Hitbox_Enabled
     if Hitbox_Enabled then
         ToggleHitbox.Text = "Hitbox Açık"
-        -- Hitbox'ı büyüt
         SetHitboxSize(2)
     else
         ToggleHitbox.Text = "Hitbox Kapalı"
-        -- Hitbox'ı normal boyuta getir
         SetHitboxSize(1)
     end
 end)
 
--- ESP aktifse, tüm oyuncular için ESP'yi yeniden oluştur
 Players.PlayerAdded:Connect(function(player)
     if ESP_Enabled then
         player.CharacterAdded:Connect(function()
